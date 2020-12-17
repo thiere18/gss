@@ -12,7 +12,9 @@ exports.register = (req, res) => {
             console.log(err);
         }
         if (result.length > 0) {
-            res.send("cet utilisateur existe deja")
+            res.status(401).send({message:`l'utilisateur ${result[0].username} existe deja`})
+        } else if (password.length < 4) {
+            res.status(400).send({ message:"le mot de passe doit contenir au moins 4 caracteres"})
         }
         let hashedPassword = await bcrypt.hash(password, 8)
         db.query("INSERT INTO users SET ? ", { username: username, password: hashedPassword }, (error, result) => {
@@ -20,7 +22,7 @@ exports.register = (req, res) => {
                 console.log(error);
             } else {
                 console.log(result)
-                res.send("success")
+                res.status(200).send({message:`l'utilisateur ${username} a ete cree`})
             }
         })
         
@@ -33,11 +35,11 @@ exports.login = async (req, res) => {
     try {
         const { username, password } = req.body
         if (!username || !password) {
-            res.status(400).send({ message:' Please enter a username and password '})
+            res.status(400).send({ message: "veuillez saisir un nom d'utilisateur et un mot de passe vslide" })
         }
         db.query("SELECT * FROM users WHERE username=?", [username], async (error, result) => {
             if (!result || !(await bcrypt.compare(password, result[0].password))) {
-                res.status(401).send({ message: "Nom d'utilisateur ou mot de passe incorrecte " })
+                res.status(400).send({ message: "Nom d'utilisateur ou mot de passe incorrecte " })
                 console.log(result)
             } else {
                 const id = result[0].id
@@ -47,15 +49,44 @@ exports.login = async (req, res) => {
                 console.log(`the token is ${token}`)
                 const cookieOptions = {
                     expires: new Date(
-                        Date.now() +process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60
+                        Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60
                     ),
                     httpOnly: true
                 }
                 res.cookie('gss', token, cookieOptions);
-                res.status(200).send("fin de la partie connexion");
+                res.status(201).send({ message: `bonjour ${username}` });
             }
         })
-    } catch(error) {
+    } catch (error) {
         
     }
-}
+};
+
+exports.reset = async (req, res) => {
+    const { username, password } = req.body
+    // const post = [username, password]
+    const sql = "SELECT id from users WHERE username=? ";
+    db.query(sql, [username], async (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        if (result.length < 0) {
+            res.status(401).send({message:`l'utilisateur ${result[0].username}  n'existe pas`})
+        } else if (password.length < 4) {
+            res.status(400).send({ message:"le mot de passe doit contenir au moins 4 caracteres"})
+        }
+        let hashedPassword = await bcrypt.hash(password, 8)
+        db.query("UPDATE users SET ? ", { password: hashedPassword }, (error, result) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(result)
+                res.status(200).send({message:`le mot de passe a ete modifie`})
+            }
+        })
+        
+
+    }
+        
+    )
+};
