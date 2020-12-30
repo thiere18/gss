@@ -5,7 +5,8 @@ const router = express.Router();
 router.get('/logout', function (req, res) {
     req.logout();
     req.session = null;
-    res.send({"msg":"successfully logged out"});
+    res.send({ "msg": "successfully logged out" });
+
 });
 
 const sendResponse = function (error, user, info) {
@@ -41,7 +42,8 @@ router.post('/signup', (req, res, next) => {
 router.post('/login', (req, res, next) => {
     const authenticate = passport.authenticate('local-signin', sendResponse.bind({
         req,
-        res
+        res,
+        
     }));
     authenticate(req, res, next);
 });
