@@ -2,8 +2,6 @@ const express = require('express')
 const dotenv = require('dotenv')
 const db = require('./db')
 const cors = require('cors')
-const cookieParser = require('cookie-parser')
-const session = require('express-session')
 const passport = require('./passportAuthentication');
 const authenticationRoute = require('./routes/authentication');
 const apiRoutes = require('./routes/apiRoutes');
@@ -11,7 +9,6 @@ const htmlRoutes = require('./routes/htmlRoutes');
 const cookieSession = require('cookie-session');
 dotenv.config({ path: './.env' })
 const app = express();
-
 app.use(express.urlencoded({
     extended: false
 }));
@@ -23,15 +20,10 @@ app.use(cookieSession({
 }));
 
 
-db.connect((error) => {
-    if (error) {
-        console.log(error)
-    }
-    else {
-        console.log('MySQL Connected ...');
-    }
+db.authenticate()
+.then(() => console.log('Mysql Connected...'))
+.catch(err => console.log('Error: ' + err))
 
-})
 
 app.use(passport.initialize());
 app.use(passport.session());
