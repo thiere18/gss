@@ -22,7 +22,7 @@ router.get('/user', checkAuthentication, (req, res) => {
                 id:req.user.id
             }
         }).then(function (data) {
-            const user = data[0];
+            const user = data;
             delete user.password;
             return res.status(200).json(user);
         }).catch(function (err) {

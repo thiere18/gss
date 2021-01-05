@@ -17,14 +17,18 @@ const User = db.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     }, 
+    role: {
+        type: Sequelize.ENUM('employee', 'super_admin'),
+        defaultValue: 'employee'
+    },
     createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
  } ,
  updatedAt: {
-    type: Sequelize.DATE,
-    defaultValue: Sequelize.NOW
+     type: Sequelize.DATE,
+     allowNull: true
 } ,
 }) 
-
+// User.sync({force: true })
 module.exports = User
