@@ -28,7 +28,6 @@ db.authenticate()
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use('/', authenticationRoute);
 app.use('/', apiRoutes);
 app.use('/', htmlRoutes);

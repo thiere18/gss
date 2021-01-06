@@ -17,6 +17,15 @@ const User = db.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     }, 
+    email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        isEmail: true
+    },
+    reset_token: {
+        type: Sequelize.STRING,
+        allowNull: true
+    }, 
     role: {
         type: Sequelize.ENUM('employee', 'super_admin'),
         defaultValue: 'employee'
