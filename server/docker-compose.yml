@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+
+    server:
+        build:
+            context: .
+        command: npm run dev 
+
+        ports:
+          - "5000:5000"
+        volumes:
+            - .:/home/node/app
+            - node_modules:/home/node/app/node_modules
+        depends_on:
+            - mysqldb
+    mysqldb:
+        image: mysql
+        cap_add:
+            - SYS_NICE  # CAP_SYS_NICE
+        environment:
+          MYSQL_ROOT_PASSWORD: "root"
+          MYSQL_DATABASE: "gss"
+          MYSQL_USER: "thiere18"
+          MYSQL_PASSWORD: "root"
+        volumes:
+            - mysql_data:/data/db
+        ports:
+          - "3306:3306"
+          
+volumes:
+    node_modules:
+    mysql_data:

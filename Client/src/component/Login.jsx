@@ -61,7 +61,9 @@ export default function SignIn() {
               veuillez vous identifier afin de pouvoir acceder a la plateforme et de
               pouvpoir gerer vos biens comme ca se doit</p>
             </div>
+            
           </div>
+          
     </div>
   </section>
         );

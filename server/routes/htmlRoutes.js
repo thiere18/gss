@@ -19,11 +19,11 @@ function checkAuthentication(req, res, next) {
 
 // Secure Routes
 router.get('/', checkAuthentication, function (req, res) {
-    return res.send({"msg": "home page"})
+    return res.send("home ge cool ")
 });
 
 router.get('/profile', checkAuthentication, function (req, res) {
-    return res.send({"msg": "profile page"})
+    return res.send({"msg": "profipage"})
 });
 
 // Public Routes

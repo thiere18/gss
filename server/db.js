@@ -3,7 +3,7 @@ dotenv.config({ path: './.env' })
 const Sequelize = require('sequelize');
 
 const db = new Sequelize('gss', 'root', 'root', {
-    host: 'localhost',
+    host: 'mysqldb',
     dialect: 'mysql',
     operatorsAliases: false,
     pool: {

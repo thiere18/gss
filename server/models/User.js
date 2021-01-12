@@ -22,8 +22,12 @@ const User = db.define('user', {
         allowNull: false,
         isEmail: true
     },
-    reset_token: {
+    reset_password_token: {
         type: Sequelize.STRING,
+        allowNull: true
+    }, 
+    reset_password_expires: {
+        type: Sequelize.DATE,
         allowNull: true
     }, 
     role: {
@@ -37,7 +41,8 @@ const User = db.define('user', {
  updatedAt: {
      type: Sequelize.DATE,
      allowNull: true
-} ,
+    },
 }) 
-// User.sync({force: true })
+
+// User.sync({force:true} )
 module.exports = User
