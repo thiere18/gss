@@ -1,18 +1,22 @@
 const passport = require('passport');
-const db = require('../db');
-
+const User = require('../models/User')
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
-    db.query('SELECT * FROM users WHERE id = ?', [id], (err, result) => {
-        if (err) {
-            return done(err, null);
+passport.deserializeUser(  function(id, done) {
+    User.findOne({
+        where: {
+            id,
         }
-        const user = result[0];
+    }).then(function (user) {
         return done(null, user);
-    });
+    }).catch(function (err) {
+        return done(err, null);
+
+    })
+
+    
 });
 
 // Import all our strategies

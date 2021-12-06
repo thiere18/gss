@@ -1,11 +1,18 @@
-const mysql = require('mysql')
 const dotenv =require('dotenv')
 dotenv.config({ path: './.env' })
+const Sequelize = require('sequelize');
 
-const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE
-});
+const db = new Sequelize('gss', 'root', 'root', {
+    host: 'mysqldb',
+    dialect: 'mysql',
+    operatorsAliases: false,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+      logging:false
+    },
+  });
+  
 module.exports = db
